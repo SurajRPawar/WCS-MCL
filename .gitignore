@@ -1,3 +1,6 @@
 # Ignore these directories
 Pump Datasheets/
 Results/
+
+# Ignore these temporary files created by MATLAB
+*.asv
