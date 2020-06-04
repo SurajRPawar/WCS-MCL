@@ -29,7 +29,7 @@ include_us;
     mao   = 0.15;        % Mass of the piston [kg]
     Rpao  = 250;         % Bearing losses in piston [N.s/m] 
     mpao  = 0.1;         % Mass of the final piston head [kg]
-    Cd    = 0.01*31959.14283; % Comliance of the diaphragm [N/m]
+    Cd    = 1*31959.14283; % Comliance of the diaphragm [N/m]
     Cao   = 4.658e-7;    % Tank capacitance [m^4.s^2/kg]
     
     % LV side
@@ -91,7 +91,7 @@ include_us;
     num_meas = size(C,1);
     num_ins = size(B,2);
 
-    w = logspace(-1,2);  % Frequency in rad/s
+    w = logspace(0,1);  % Frequency in rad/s
     steps = numel(w);        
     RGA_mat = zeros(num_meas, num_ins, steps);
     RGA_mag = zeros(num_meas, num_ins, steps);
