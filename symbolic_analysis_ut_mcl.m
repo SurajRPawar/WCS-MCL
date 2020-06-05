@@ -97,6 +97,7 @@ filename = 'Data Files/ut_mcl_linsys.mat';
     P28 = Plv + Fdlv/Ap;
     Q26 = (1/Rrc)*(P28 - P17);
     Q21 = (1/Rvad)*(P17 - P28);
+    
     %{
         x = [iao ilv xtao vao vlvt xlvt xmao xmlv vpao xpao vplv xplv
               xdao xdlv Vao Vlv]^T
@@ -108,12 +109,12 @@ filename = 'Data Files/ut_mcl_linsys.mat';
     vlvtdot = (1/mlvt)*(rlv*ilv - Fmlv);
     xlvtdot = vlvtdot;    
     xmaodot = vao - vpao;
-    xmlvdot = vlvt - vplv;    
+    xmlvdot = vlvt - vplv;
     vpaodot = (1/mpao)*(Fmao - Rpao*vpao - Fdao);
     xpaodot = vpaodot;
     vplvdot = (1/mplv)*(Fmlv - Rplv*vplv - Fdlv);
-    xplvdot = vplv;    
-    Vaodot = Qvad - Q21 - (Qrc - Q26);    
+    xplvdot = vplv;
+    Vaodot = Qvad - Q21 - (Qrc - Q26);
     Vlvdot = Qrc - Q26 - Qvad + Q21;
     xdaodot = vpao + (1/Ap)*(Qvad - Q21 - Qrc + Q26);
     xdlvdot = vplv + (1/Ap)*(Qrc - Q26 - Qvad + Q21);
@@ -137,15 +138,29 @@ filename = 'Data Files/ut_mcl_linsys.mat';
 
 %% Outputs
     fprintf('Creating output variables \n');
-    y = [Plv; 
-         Pao;
-         xplv - xpao];
+    y = [P28; % LV Side
+         P17;   % AO Side
+         xplv];
  
 %% Define states, inputs and disturbance
     fprintf('Computing Jacobians \n');
-    x = [iao; ilv; xtao; vao; vlvt; xlvt; xmao; xmlv; vpao; xpao; vplv; xplv;...        
-         xdao; xdlv; Vao; Vlv];
-    u = [ulv; uao; Qrc];
+    x = [iao; 
+        ilv; 
+        xtao; 
+        vao; 
+        vlvt; 
+        xlvt; 
+        xmao; 
+        xmlv; 
+        vpao; 
+        xpao; 
+        vplv; 
+        xplv;
+        xdao; 
+        xdlv; 
+        Vao; 
+        Vlv];
+    u = [ulv; Qrc; uao];
     d = Qvad;
 
     % Linearized matrices
