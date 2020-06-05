@@ -111,6 +111,7 @@ include_us;
     
     for i = 1:steps
         G = freqresp(syslin,w(i));
+        %RGA_mat(:,:,i) = ucrga(G);
         RGA_mat(:,:,i) = G.*pinv(G).'; % RGA matrix
         RGA_mag(:,:,i) = abs(RGA_mat(:,:,i));
         RGA_no(i) = sum(sum(abs(RGA_mat(:,:,i) - eye(num_meas))));

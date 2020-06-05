@@ -74,7 +74,7 @@ include_us;
     xdao0 = 0;
     xdlv0 = 0;
     Vao0 = 0;
-    Vlv0 = 0;
+    Vlv0 = 0;   % We won't need these initial conditions because the UT mock loop is already linear
     
     IC = [iao0; ilv0; xtao0; vao0; vlvt0; xlvt0; xmao0; xmlv0; vpao0; xpao0;...
           vplv0; xplv0; xdao0; xdlv0; Vao0; Vlv0];
@@ -91,7 +91,7 @@ include_us;
     num_meas = size(C,1);
     num_ins = size(B,2);
 
-    w = logspace(0,1);  % Frequency in rad/s
+    w = logspace(-3,2);  % Frequency in rad/s
     steps = numel(w);        
     RGA_mat = zeros(num_meas, num_ins, steps);
     RGA_mag = zeros(num_meas, num_ins, steps);
@@ -99,14 +99,15 @@ include_us;
     
     for i = 1:steps
         G = freqresp(syslin,w(i));
-        RGA_mat(:,:,i) = G.*pinv(G).'; % RGA matrix
+        %RGA_mat(:,:,i) = ucrga(G);
+        RGA_mat(:,:,i) = G.*inv(G).'; % RGA matrix
         RGA_mag(:,:,i) = abs(RGA_mat(:,:,i));
         RGA_no(i) = sum(sum(abs(RGA_mat(:,:,i) - eye(num_meas))));
     end  
    RGA_dB = 20*log10(RGA_mag); 
    
    figure;
-   set(groot,'defaultLineLineWidth',0.8);
+   set(groot,'defaultLineLineWidth',0.8);   
    
    subplot(3,1,1);
    hold on;
@@ -116,8 +117,9 @@ include_us;
    hold off;
    ylabel('Mag (dB)');
    title('PLV');
-   legend('ulv','uao', 'Qrc');
+   legend('ulv', 'Qrc','uao');
 %    ylim([-120 20]);
+   set(gca,'XScale','log');
       
    subplot(3,1,2);
    hold on;
@@ -127,8 +129,9 @@ include_us;
    hold off;
    ylabel('Mag (dB)');
    title('PAO');
-   legend('ulv','uao','Qrc');
+   legend('ulv', 'Qrc','uao');
 %    ylim([-120 20]);
+   set(gca,'XScale','log');
    
    subplot(3,1,3);
    hold on;
@@ -137,7 +140,15 @@ include_us;
    plot(w,squeeze(RGA_dB(3,3,:)),'ko-','MarkerSize',2);
    hold off;
    ylabel('Mag (dB)');
-   title('xplv - xpao');
+   title('xlvt');
    xlabel('Frequency (Hz)');
-   legend('ulv','uao','Qrc');
+   legend('ulv', 'Qrc','uao');
 %    ylim([-50 20]);
+   set(gca,'XScale','log');
+
+   figure;
+   plot(w,RGA_no,'.-');
+   xlabel('Frequency (Hz)');
+   ylabel('||RGA - I|| sum');
+   title('RGA Number');
+   set(gca, 'XScale','log');
