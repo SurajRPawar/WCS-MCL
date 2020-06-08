@@ -140,7 +140,7 @@ filename = 'Data Files/ut_mcl_linsys.mat';
     fprintf('Creating output variables \n');
     y = [P28; % LV Side
          P17;   % AO Side
-         xplv];
+         xplv - xpao];
  
 %% Define states, inputs and disturbance
     fprintf('Computing Jacobians \n');
@@ -160,7 +160,7 @@ filename = 'Data Files/ut_mcl_linsys.mat';
         xdlv; 
         Vao; 
         Vlv];
-    u = [ulv; Qrc; uao];
+    u = [ulv; uao; Qrc];
     d = Qvad;
 
     % Linearized matrices
