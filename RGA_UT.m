@@ -15,6 +15,7 @@ v1 : Suraj R Pawar, 5-20-2020
 %}
 
 close all; clear; clc;
+set(0,'defaulttextinterpreter','latex');
 include_us;
 
 %% User Inputs (Only change values here)
@@ -29,7 +30,7 @@ include_us;
     mao   = 0.15;        % Mass of the piston [kg]
     Rpao  = 250;         % Bearing losses in piston [N.s/m] 
     mpao  = 0.1;         % Mass of the final piston head [kg]
-    Cd    = 1*31959.14283; % Comliance of the diaphragm [N/m]
+    Cd    = 31959.14283; % Comliance of the diaphragm [N/m]
     Cao   = 4.658e-7;    % Tank capacitance [m^4.s^2/kg]
     
     % LV side
@@ -91,7 +92,7 @@ include_us;
     num_meas = size(C,1);
     num_ins = size(B,2);
 
-    w = logspace(1,2);  % Frequency in rad/s
+    w = logspace(-3,4);  % Frequency in rad/s
     steps = numel(w);        
     RGA_mat = zeros(num_meas, num_ins, steps);
     RGA_mag = zeros(num_meas, num_ins, steps);
@@ -99,8 +100,8 @@ include_us;
     
     for i = 1:steps
         G = freqresp(syslin,w(i));
-        %RGA_mat(:,:,i) = ucrga(G);
-        RGA_mat(:,:,i) = G.*inv(G).'; % RGA matrix
+        RGA_mat(:,:,i) = ucrga(G);
+        %RGA_mat(:,:,i) = G.*pinv(G).'; % RGA matrix
         RGA_mag(:,:,i) = abs(RGA_mat(:,:,i));
         RGA_no(i) = sum(sum(abs(RGA_mat(:,:,i) - eye(num_meas))));
     end  
@@ -108,7 +109,7 @@ include_us;
    
    figure;
    set(groot,'defaultLineLineWidth',0.8);   
-   
+   lgd_text = {'Q_{rc}','u_{ao}', 'u_{lv}'};
    subplot(3,1,1);
    hold on;
    plot(w,squeeze(RGA_dB(1,1,:)));
@@ -117,8 +118,8 @@ include_us;
    hold off;
    ylabel('Mag (dB)');
    title('PLV');
-   legend('ulv', 'Qrc','uao');
-   ylim([-50 20]);
+   legend(lgd_text);
+%    ylim([-50 20]);
    set(gca,'XScale','log');
       
    subplot(3,1,2);
@@ -129,8 +130,8 @@ include_us;
    hold off;
    ylabel('Mag (dB)');
    title('PAO');
-   legend('ulv', 'Qrc','uao');
-   ylim([-50 20]);
+   legend(lgd_text);
+%    ylim([-50 20]);
    set(gca,'XScale','log');
    
    subplot(3,1,3);
@@ -140,15 +141,15 @@ include_us;
    plot(w,squeeze(RGA_dB(3,3,:)),'ko-','MarkerSize',2);
    hold off;
    ylabel('Mag (dB)');
-   title('xplv - xpao');
+   title('xlvt');
    xlabel('Frequency (Hz)');
-   legend('ulv', 'Qrc','uao');
+   legend(lgd_text);
    ylim([-50 20]);
    set(gca,'XScale','log');
   
    figure;
    plot(w,RGA_no,'.-');
    xlabel('Frequency (Hz)');
-   ylabel('||RGA - I|| sum');
+   ylabel('$||$RGA - I$||_{sum}$');
    title('RGA Number');
    set(gca, 'XScale','log');   

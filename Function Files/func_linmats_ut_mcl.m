@@ -90,22 +90,22 @@ v1 : Suraj R Pawar, 6-3-2020
     Rrc = parameters(21);
     
 % Initial Conditions
-    iao0 = IC(1);
-    ilv0 = IC(2);
-    xtao0 = IC(3);
-    vao0 = IC(4);
-    vlvt0 = IC(5);
-    xlvt0 = IC(6);
-    xmao0 = IC(7);
-    xmlv0 = IC(8);
-    vpao0 = IC(9);
-    xpao0 = IC(10);
-    vplv0 = IC(11);
-    xplv0 = IC(12);
-    xdao0 = IC(13);
-    xdlv0 = IC(14);
-    Vao0 = IC(15);
-    Vlv0 = IC(16);
+    iao = IC(1);
+    ilv = IC(2);
+    xtao = IC(3);
+    vao = IC(4);
+    vlvt = IC(5);
+    xlvt = IC(6);
+    xmao = IC(7);
+    xmlv = IC(8);
+    vpao = IC(9);
+    xpao = IC(10);
+    vplv = IC(11);
+    xplv = IC(12);
+    xdao = IC(13);
+    xdlv = IC(14);
+    Vao = IC(15);
+    Vlv = IC(16);
     
 % Load file
     filename = 'ut_mcl_linsys.mat';

@@ -106,12 +106,13 @@ filename = 'Data Files/ut_mcl_linsys.mat';
     ilvdot = (1/Lvclv)*(ulv - Rvclv*ilv - rlv*vlvt);
     xtaodot = vao;
     vaodot = (1/mao)*(rao*iao - ktao*xtao - Fmao);
+    xaodot = vao;
     vlvtdot = (1/mlvt)*(rlv*ilv - Fmlv);
-    xlvtdot = vlvtdot;    
+    xlvtdot = vlvt;    
     xmaodot = vao - vpao;
     xmlvdot = vlvt - vplv;
-    vpaodot = (1/mpao)*(Fmao - Rpao*vpao - Fdao);
-    xpaodot = vpaodot;
+    vpaodot = (1/mpao)*(Fmao - Rpao*vpao - Fdao);    
+    xpaodot = vpao;
     vplvdot = (1/mplv)*(Fmlv - Rplv*vplv - Fdlv);
     xplvdot = vplv;
     Vaodot = Qvad - Q21 - (Qrc - Q26);
@@ -138,8 +139,8 @@ filename = 'Data Files/ut_mcl_linsys.mat';
 
 %% Outputs
     fprintf('Creating output variables \n');
-    y = [P28; % LV Side
-         P17;   % AO Side
+    y = [P28;   % LV Side
+         P17   % AO Side
          xplv - xpao];
  
 %% Define states, inputs and disturbance
@@ -148,19 +149,19 @@ filename = 'Data Files/ut_mcl_linsys.mat';
         ilv; 
         xtao; 
         vao; 
-        vlvt; 
-        xlvt; 
+        vlvt;   
+        xlvt;
         xmao; 
         xmlv; 
-        vpao; 
-        xpao; 
-        vplv; 
+        vpao;   
+        xpao;
+        vplv;
         xplv;
         xdao; 
         xdlv; 
         Vao; 
         Vlv];
-    u = [ulv; uao; Qrc];
+    u = [Qrc; uao; ulv];
     d = Qvad;
 
     % Linearized matrices
